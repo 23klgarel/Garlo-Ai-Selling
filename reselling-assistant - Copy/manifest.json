@@ -1,0 +1,73 @@
+{
+  "manifest_version": 3,
+  "name": "Garlo AI Selling",
+  "version": "9.0.0",
+  "description": "AI reselling suite: Amazon scraper, listing generator, marketplace autofill, bulk queue, price watcher, inbox reader, ledger + tax reports.",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "unlimitedStorage",
+    "downloads",
+    "clipboardWrite",
+    "tabs",
+    "camera",
+    "alarms",
+    "identity",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://*.amazon.de/*",
+    "https://*.amazon.com/*",
+    "https://*.media-amazon.com/*",
+    "https://*.ssl-images-amazon.com/*",
+    "https://*.images-amazon.com/*",
+    "https://*.otto.de/*",
+    "https://*.idealo.de/*",
+    "https://*.idealoimg.de/*",
+    "https://*.kleinanzeigen.de/*",
+    "https://*.ebay.de/*",
+    "https://*.ebayimg.com/*",
+    "https://*.vinted.de/*",
+    "https://*.vinted.net/*",
+    "https://api.ebay.com/*",
+    "https://api.sandbox.ebay.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Garlo AI Selling"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.amazon.de/*",
+        "https://*.amazon.com/*",
+        "https://*.otto.de/*",
+        "https://*.idealo.de/*",
+        "https://*.kleinanzeigen.de/*",
+        "https://*.ebay.de/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": ["https://*.vinted.de/*"],
+      "js": ["modules/scraper-vinted.js", "content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["dashboard.html", "dashboard.css", "dashboard.js", "modules/*.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
